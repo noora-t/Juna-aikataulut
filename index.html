@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html ng-app="TrainApp" lang="fi">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Asemahaku</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!-- Custom styles for this template -->
+        <link href="junat.css" rel="stylesheet">
+        
+        <!-- JavaScript and AngularJS-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="angular.min.js"></script>
+        <script type="text/javascript" src="junat.js"></script>
+    </head>
+    <body ng-controller="TrainController">
+        <div class="container">
+            <main role="main">
+                <div class="jumbotron">
+                    <h1 class="display-3">Asemien aikataulut</h1>
+                    <p class="lead">Hae asemalle saapuvia ja asemalta lähteviä junia.</p>
+
+                    <div class="input-group">
+                        <select ng-model="stationSelect" ng-options="item.Lyh as item.Nimi for item in stationList" class="custom-select" id="station">
+                        <option value="">Valitse asema</option></select>
+                        <div class="input-group-append">
+                            <button ng-click="fetch()" class="btn btn-outline-secondary" type="button">Hae</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <ul class="nav nav-tabs justify-content-center nav-fill" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="arrival-tab" data-toggle="tab" href="#arrivals" role="tab" aria-controls="arrivals" aria-selected="true">Saapuvat junat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="departure-tab" data-toggle="tab" href="#departures" role="tab" aria-controls="departures" aria-selected="false">Lähtevät junat</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="arrivals" role="tabpanel" aria-labelledby="arrival-tab">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Saapumisaika</th>
+                                        <th scope="col">Raide</th>
+                                        <th scope="col">Juna</th>
+                                        <th scope="col">Lähtöasema</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arr">
+                                    <tr ng-repeat="x in arrList">
+                                        <td>{{ x.time }}</td>
+                                        <td>{{ x.track }}</td>
+                                        <td>{{ x.name }}</td>
+                                        <td>{{ x.station }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="departures" role="tabpanel" aria-labelledby="departure-tab">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Lähtöaika</th>
+                                        <th scope="col">Raide</th>
+                                        <th scope="col">Juna</th>
+                                        <th scope="col">Määränpää</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dep">
+                                    <tr ng-repeat="x in depList">
+                                        <td>{{ x.time }}</td>
+                                        <td>{{ x.track }}</td>
+                                        <td>{{ x.name }}</td>
+                                        <td>{{ x.station }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; Noora Toimela</p>
+            </footer>
+        </div> 
+    </body>
+</html>
