@@ -80,9 +80,6 @@ body {
 }
 
 @media screen and (max-width: 26em) {
-  .jumbotron {
-    background-color: aqua;
-  }
   .tab-content {
     font-size: 0.8em;
   }
