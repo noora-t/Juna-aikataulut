@@ -18,17 +18,21 @@ app.controller('TrainController', function ($scope, $http, $filter) {
         //Previous search is cleared
         $scope.depList = [];
         $scope.arrList = [];
+        
+        //Control of train list lengths
+        var dFlag = true;
+        var aFlag = true;
 
         //User selected station
         var value = $scope.stationSelect;
         
         //VR API url
         var url = "https://rata.digitraffic.fi/api/v1/live-trains/station/" + value 
-        + "?arrived_trains=0&arriving_trains=8&departed_trains=0&departing_trains=8&version=";
+        + "?minutes_before_departure=1440&minutes_after_departure=0&minutes_before_arrival=1440&minutes_after_arrival=0";
         
         //VR url is searched for train info
         $http.get(url).success(function (data) {
-            for (var i = 0; i < data.length; i++) {
+            for (var i = 0; i < data.length && (dFlag || aFlag); i++) {
                 for (var j = 0; j < data[i].timeTableRows.length; j++) {                
                     if (data[i].timeTableRows[j].stationShortCode == value) {
                         //Info of a train is put to a new object
@@ -44,6 +48,7 @@ app.controller('TrainController', function ($scope, $http, $filter) {
                         if (h < 10) {
                             h = "0" + h;
                         }
+                        obj.date = date;
                         obj.time = h + ":" + min;                     
 
                         //Track info                      
@@ -73,16 +78,22 @@ app.controller('TrainController', function ($scope, $http, $filter) {
                         }
                         
                         //Train object is pushed to a correct list of trains
-                        if (data[i].timeTableRows[j].type == "DEPARTURE") {
+                        if (data[i].timeTableRows[j].type == "DEPARTURE" && dFlag) {
                             $scope.depList.push(obj);                          
                         }
-                        else if (data[i].timeTableRows[j].type == "ARRIVAL") {
+                        else if (data[i].timeTableRows[j].type == "ARRIVAL" && aFlag) {
                             $scope.arrList.push(obj); 
                         }
                         
                         //Lists are sorted by time
-                        $scope.depList = $filter('orderBy')($scope.depList, 'time');          
-                        $scope.arrList = $filter('orderBy')($scope.arrList, 'time');                   
+                        $scope.depList = $filter('orderBy')($scope.depList, 'date');          
+                        $scope.arrList = $filter('orderBy')($scope.arrList, 'date');              
+                        if($scope.depList.length == 8) {
+                            dFlag = false;                        
+                        }
+                        if($scope.arrList.length == 8) {
+                            aFlag = false;
+                        }
                     }
                 }            
             }
