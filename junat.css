@@ -28,6 +28,7 @@ body {
 /* Custom page footer */
 .footer {
   padding-top: 1.5rem;
+  margin-top: 2em;
   color: #777;
   border-top: .05rem solid #e5e5e5;
 }
@@ -76,4 +77,18 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+thead {
+    border-top: 0.5em solid white;
+}
+
+.tab-content {
+    border-left: 0.05em solid #e5e5e5;
+    border-right: 0.05em solid #e5e5e5;
+    border-bottom: 0.05em solid #e5e5e5;
+}
+
+.table {
+    margin-bottom: 0em;
 }
